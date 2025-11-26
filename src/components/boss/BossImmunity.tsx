@@ -1,8 +1,6 @@
-// src/components/boss/BossImmunity.tsx
 import React from "react";
 import { StringListInput } from "../common/StringListInput";
 import type { ImmunityEntry } from "../../types";
-// Import Tooltips
 import { Tooltip } from "../common/Tooltip";
 import { BossImmunityTooltips as tooltips } from '../../tooltips';
 

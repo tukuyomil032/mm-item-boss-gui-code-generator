@@ -1,15 +1,10 @@
-// src/components/DocsPage.tsx
-
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-
-// ★ 1. 修正: tooltips.ts から docData と allDocEntries をインポート
 import { docData, allDocEntries } from '../tooltips';
 
 
-// (filterData 関数は変更なし)
 const filterData = (data: Record<string, string>, term: string): Record<string, string> | null => {
-  if (!term) return data; // 検索語がなければすべて表示
+  if (!term) return data;
   const lowerTerm = term.toLowerCase();
   const result: Record<string, string> = {};
   let found = false;
@@ -20,10 +15,9 @@ const filterData = (data: Record<string, string>, term: string): Record<string, 
       found = true;
     }
   }
-  return found ? result : null; // ヒットしなければ null
+  return found ? result : null; 
 };
 
-// ★ 2. DocSection 修正 (Mob Types の日本語訳に対応)
 const DocSection: React.FC<{ title: string; data: Record<string, string> | null }> = ({ title, data }) => {
   if (!data) {
     return (
@@ -41,7 +35,6 @@ const DocSection: React.FC<{ title: string; data: Record<string, string> | null 
         {Object.entries(data).map(([key, value]) => (
           <li key={key} style={{ borderBottom: '1px solid var(--panel-border)', padding: '10px 0' }}>
             <strong style={{ color: 'var(--accent-color)', fontFamily: 'monospace' }}>{key}</strong>
-            {/* ★ 修正: Mob Types の場合は ` - 日本語訳` をインライン表示 */}
             <p style={{ 
               margin: '5px 0 0 10px', 
               whiteSpace: 'pre-wrap', 
@@ -56,8 +49,7 @@ const DocSection: React.FC<{ title: string; data: Record<string, string> | null 
   );
 };
 
-// ★ 3. LocalSearchBot (API呼び出しをローカル検索ロジックに置換)
-// (ユーザー提供の文言を尊重)
+
 const LocalSearchBot: React.FC = () => {
   const [chatHistory, setChatHistory] = useState<{ role: 'user' | 'model', text: string }[]>([]);
   const [input, setInput] = useState('');
@@ -71,13 +63,11 @@ const LocalSearchBot: React.FC = () => {
     setInput('');
     setIsLoading(true);
 
-    // --- ローカル検索ロジック ---
-    await new Promise(resolve => setTimeout(resolve, 300)); // AIが考えているように見せるための遅延
+    await new Promise(resolve => setTimeout(resolve, 300)); 
 
     const lowerInput = input.toLowerCase();
     const results = [];
 
-    // ★ 修正: インポートした allDocEntries を使用
     for (const entry of allDocEntries) {
       const keyMatch = entry.option.toLowerCase().includes(lowerInput);
       const descMatch = entry.description.toLowerCase().includes(lowerInput);
@@ -113,24 +103,18 @@ const LocalSearchBot: React.FC = () => {
     } else {
       modelResponse = `「${input}」に関連するオプションは見つかりませんでした。スペルやキーワードを変えてお試しください。`;
     }
-    // --- 検索ロジックここまで ---
-
     setChatHistory(prev => [...prev, { role: 'model', text: modelResponse }]);
     setIsLoading(false);
   };
 
   return (
-    // config-panel スタイルを流用
     <div className="config-panel" style={{ background: 'var(--panel-bg)' }}>
-      {/* ユーザー提供の文言 */}
       <h3>Help Chat</h3>
       <p style={{ color: 'var(--text-color-muted)', fontSize: '0.9em', marginTop: '-15px' }}>
         あなたの探しているオプションをデータベースから検索します
       </p>
       
-      {/* チャット履歴 */}
       <div className="chat-history" style={{ flexGrow: 1, minHeight: '300px', maxHeight: '500px', overflowY: 'auto', border: '1px solid var(--panel-border)', borderRadius: '6px', padding: '10px', marginBottom: '10px', background: 'var(--input-bg)' }}>
-        {/* ユーザー提供の文言 */}
         {chatHistory.length === 0 && (
           <p style={{ color: 'var(--text-color-muted)', textAlign: 'center', marginTop: '50px' }}>
             e.x): Health, Prevent, Display ...etc
@@ -144,17 +128,15 @@ const LocalSearchBot: React.FC = () => {
             <p style={{ margin: '5px 0 0 10px', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{msg.text}</p>
           </div>
         ))}
-        {/* ユーザー提供の文言 */}
         {isLoading && <p style={{ color: 'var(--text-color-muted)' }}>Searching...</p>}
       </div>
 
-      {/* 入力フォーム */}
       <div style={{ display: 'flex', gap: '10px', marginTop: 'auto' }}>
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder={isLoading ? "..." : "Type Here"} // ユーザー提供の文言
+          placeholder={isLoading ? "..." : "Type Here"} 
           disabled={isLoading}
           onKeyDown={(e) => e.key === 'Enter' && handleSend()}
         />
@@ -167,16 +149,13 @@ const LocalSearchBot: React.FC = () => {
 };
 
 
-// DocsPage メインコンポーネント (修正)
 export const DocsPage: React.FC = () => {
   const [docType, setDocType] = useState<'boss' | 'item'>('boss');
-  // ユーザー提供のコードに合わせて 'Internal Name' に
   const [activeCategory, setActiveCategory] = useState<string>('Internal Name'); 
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleDocTypeChange = (type: 'boss' | 'item') => {
     setDocType(type);
-    // ★ 修正: インポートした docData を使用
     setActiveCategory(docData[type][0].name); 
     setSearchTerm('');
   };
@@ -187,7 +166,6 @@ export const DocsPage: React.FC = () => {
   };
 
   const filteredCategoryData = useMemo(() => {
-    // ★ 修正: インポートした docData を使用
     const category = docData[docType].find(cat => cat.name === activeCategory);
     if (!category) return null;
     const filtered = filterData(category.data, searchTerm);
@@ -198,13 +176,8 @@ export const DocsPage: React.FC = () => {
   }, [docType, activeCategory, searchTerm]);
 
   return (
-    // 2カラムレイアウトを適用
     <main className="app-layout docs-layout">
-      
-      {/* ローカル検索ボットを左側に配置 */}
-      <LocalSearchBot />
-
-      {/* ドキュメントを右側カラムに配置 */}
+            <LocalSearchBot />
       <div className="config-panel">
         <div className="output-header">
           <h2>Options Documentation</h2>
@@ -212,8 +185,6 @@ export const DocsPage: React.FC = () => {
             <button className="button button-primary">Back to Generator</button>
           </Link>
         </div>
-
-        {/* --- Boss / Item 切り替え --- */}
         <div className="form-section">
           <h3>Documentation Type</h3>
           <div className="type-selector">
@@ -231,12 +202,9 @@ export const DocsPage: React.FC = () => {
             </button>
           </div>
         </div>
-
-        {/* --- カテゴリ 切り替え --- */}
         <div className="form-section">
           <h3>Category</h3>
           <div className="type-selector" style={{ flexWrap: 'wrap' }}>
-            {/* ★ 修正: インポートした docData を使用 */}
             {docData[docType].map((category) => (
               <button
                 key={category.name}
@@ -249,8 +217,6 @@ export const DocsPage: React.FC = () => {
             ))}
           </div>
         </div>
-        
-        {/* --- 検索ボックス --- */}
         <div className="form-section">
           <h3>Search in '{activeCategory}' (英語・日本語)</h3>
           <div className="form-group">
@@ -262,9 +228,6 @@ export const DocsPage: React.FC = () => {
             />
           </div>
         </div>
-
-
-        {/* --- 説明文の表示 --- */}
         {filteredCategoryData ? (
           <DocSection 
             title={filteredCategoryData.name} 

@@ -1,4 +1,3 @@
-// src/components/boss/BossDisguise.tsx
 import React from "react";
 import type { DisguiseOptions } from "../../types";
 import {
@@ -6,7 +5,6 @@ import {
   NumberInput,
   CheckboxInput,
 } from "../common/FormInputs";
-// Import Tooltips
 import { BossDisguiseTooltips as tooltips } from '../../tooltips';
 
 interface Props {
@@ -14,7 +12,6 @@ interface Props {
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
 }
 
-// Helper to create nested name attribute
 const name = (key: keyof DisguiseOptions) => `Disguise.${key}`;
 
 export const BossDisguiseForm: React.FC<Props> = ({ options, onChange }) => {

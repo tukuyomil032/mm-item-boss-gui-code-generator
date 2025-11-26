@@ -1,5 +1,3 @@
-// src/App.tsx
-
 import React, { useState, useCallback } from "react";
 import { Routes, Route, Link } from 'react-router-dom';
 import { BossConfigurator } from "./components/boss/BossConfigurator";
@@ -8,7 +6,6 @@ import { DocsPage } from './components/DocsPage';
 import type { BossConfig, ItemConfig } from "./types";
 import { stringify } from "yaml";
 
-// (cleanObject 関数は変更なし)
 function cleanObject(obj: any): any {
   if (Array.isArray(obj)) {
     const cleanedArray = obj
@@ -38,7 +35,6 @@ function cleanObject(obj: any): any {
   return obj;
 }
 
-// ★ 1. GeneratorPage が props を受け取るように変更 (変更なし)
 interface GeneratorPageProps {
   configType: 'boss' | 'item';
   setConfigType: React.Dispatch<React.SetStateAction<'boss' | 'item'>>;
@@ -114,16 +110,12 @@ const GeneratorPage: React.FC<GeneratorPageProps> = ({
       <div className="output-panel">
         <div className="output-header">
           <h3>Generated MythicMobs YAML</h3>
-          {/* ★ 2. コピーボタンのJSXを変更 */}
           <button
-            // ★ 3. `isCopied` 状態に応じて `copied` クラスを追加
             className={`button button-secondary ${isCopied ? 'copied' : ''}`}
             onClick={handleCopyToClipboard}
-            // ★ 4. アニメーション中はボタンを無効化
             disabled={isCopied}
           >
             {isCopied ? (
-              // ★ 5. "Copied!" 状態の表示 (SVGアイコン + テキスト)
               <>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style={{ marginRight: '8px' }}>
                   <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
@@ -131,7 +123,6 @@ const GeneratorPage: React.FC<GeneratorPageProps> = ({
                 COPIED!
               </>
             ) : (
-              // ★ 6. 通常時のテキスト
               'COPY'
             )}
           </button>
@@ -148,7 +139,6 @@ const GeneratorPage: React.FC<GeneratorPageProps> = ({
 };
 
 
-// ★ 7. Appコンポーネント (状態管理)
 export default function App() {
   const [configType, setConfigType] = useState<'boss' | 'item'>('boss');
   const [generatedYaml, setGeneratedYaml] = useState(
@@ -168,7 +158,6 @@ export default function App() {
 
   const [isCopied, setIsCopied] = useState(false);
 
-  // (handleGenerateCode は変更なし)
   const handleGenerateCode = useCallback(() => {
     let outputObject = {};
     let yamlString = "";
@@ -198,13 +187,11 @@ export default function App() {
     }
   }, [configType, bossConfig, itemConfig]);
 
-  // ★ 8. handleCopyToClipboard のタイムアウトを 2000ms (2秒) に変更
   const handleCopyToClipboard = useCallback(() => {
     if (isCopied) return;
 
     navigator.clipboard.writeText(generatedYaml).then(() => {
         setIsCopied(true); 
-        // ★ 9. 動画に合わせて 2秒後にリセット
         setTimeout(() => {
           setIsCopied(false);
         }, 2000); 

@@ -1,12 +1,7 @@
-// src/components/item/ItemConfigurator.tsx
-import React, { useState } from "react"; // ★ 1. useState をインポート
+import React, { useState } from "react";
 import type { ItemConfig } from "../../types";
-
-// Tooltips
 import { ItemInternalNameTooltip as tooltips } from '../../tooltips';
-
-// Child Components
-import { TextInput, SelectInput } from "../common/FormInputs"; // ★ 2. SelectInput をインポート
+import { TextInput, SelectInput } from "../common/FormInputs";
 import { ItemOptionsForm } from "./ItemOptions";
 import { ItemAttributesForm } from "./ItemAttributes";
 import { ItemEnchantmentsForm } from "./ItemEnchantments";
@@ -17,23 +12,19 @@ interface Props {
   setConfig: React.Dispatch<React.SetStateAction<ItemConfig>>;
 }
 
-// ★ 3. カテゴリのリストを定義
 const itemCategories = [
   { value: "Options", label: "1. Options" },
   { value: "Attributes", label: "2. Attributes" },
   { value: "Enchantments", label: "3. Enchantments" },
   { value: "Potions", label: "4. Potions" },
 ];
-// ★ 4. カテゴリの型を定義
 type ItemCategory = "Options" | "Attributes" | "Enchantments" | "Potions";
 
 
 export function ItemConfigurator({ config, setConfig }: Props) {
 
-  // ★ 5. アクティブなカテゴリを管理するState。デフォルトは'Options'
   const [activeCategory, setActiveCategory] = useState<ItemCategory>("Options");
 
-  // (handleChange 関数は変更なし)
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -68,7 +59,6 @@ export function ItemConfigurator({ config, setConfig }: Props) {
     });
   };
 
-  // (handleRootListChange 関数は変更なし)
   const handleRootListChange = (
     name: "Attributes" | "Enchantments" | "Potions", 
     newValues: string[]
@@ -79,7 +69,6 @@ export function ItemConfigurator({ config, setConfig }: Props) {
     }));
   };
   
-  // (handleOptionsListChange 関数は変更なし)
   const handleOptionsListChange = (
     name: "Lore" | "Hide" | "ItemFlags" | "BannerLayers" | "Colors" | "FadeColors" | "Pages",
     newValues: string[]
@@ -108,7 +97,6 @@ export function ItemConfigurator({ config, setConfig }: Props) {
 
   return (
     <>
-      {/* 1. InternalName (変更なし) */}
       <div className="form-section">
         <h3>Item Internal Name</h3>
         <TextInput
@@ -120,7 +108,6 @@ export function ItemConfigurator({ config, setConfig }: Props) {
         />
       </div>
 
-      {/* ★ 6. カテゴリ選択のドロップダウンを追加 */}
       <div className="form-section">
         <h3>Category Select</h3>
         <SelectInput
@@ -133,7 +120,6 @@ export function ItemConfigurator({ config, setConfig }: Props) {
         />
       </div>
 
-      {/* ★ 7. 条件付きレンダリングに変更 */}
       
       {activeCategory === "Options" && (
         <div className="form-section">

@@ -1,4 +1,3 @@
-// src/components/common/StringListInput.tsx
 import React, { useState } from "react";
 
 interface Props {
@@ -40,7 +39,6 @@ export const StringListInput: React.FC<Props> = ({
   };
 
   return (
-    // 変更: .setting-item-child (layout.css) と .string-list-input (components.css)
     <div className="setting-item-child string-list-input">
       <label>{label}</label>
       {helpText && (
@@ -66,7 +64,6 @@ export const StringListInput: React.FC<Props> = ({
         />
         <button
           type="button"
-          // (デフォルトの <button> スタイルを適用)
           onClick={handleAdd}
           style={{ flexShrink: 0 }}
         >
@@ -81,7 +78,7 @@ export const StringListInput: React.FC<Props> = ({
               <span>{item}</span>
               <button
                 type="button"
-                className="button-remove" // 変更: .button-remove
+                className="button-remove"
                 onClick={() => handleRemove(index)}
               >
                 X

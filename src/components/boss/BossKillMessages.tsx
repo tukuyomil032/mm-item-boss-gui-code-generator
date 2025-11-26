@@ -1,8 +1,6 @@
-// src/components/boss/BossKillMessages.tsx
 import React from "react";
 import { StringListInput } from "../common/StringListInput";
 import type { KillMessageEntry } from "../../types";
-// Import Tooltips
 import { Tooltip } from "../common/Tooltip";
 import { BossKillMessagesTooltips as tooltips } from '../../tooltips';
 

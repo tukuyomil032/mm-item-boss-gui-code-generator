@@ -1,8 +1,6 @@
-// src/components/boss/BossDisplay.tsx
 import React from "react";
 import type { BossDisplayOptions } from "../../types";
 import { TextInput, CheckboxInput } from "../common/FormInputs";
-// Import Tooltips
 import { BossDisplayTooltips as tooltips } from '../../tooltips';
 
 interface Props {
@@ -10,7 +8,6 @@ interface Props {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-// Helper to create nested name attribute
 const name = (key: keyof BossDisplayOptions) => `DisplayOptions.${key}`;
 
 export const BossDisplayForm: React.FC<Props> = ({ options, onChange }) => {

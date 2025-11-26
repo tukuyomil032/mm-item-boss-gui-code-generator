@@ -1,8 +1,6 @@
-// src/components/boss/BossAI.tsx
 import React from "react";
 import { StringListInput } from "../common/StringListInput";
 import type { AIEntry } from "../../types";
-// Import Tooltips
 import { Tooltip } from "../common/Tooltip";
 import { BossAITooltips as tooltips } from '../../tooltips';
 

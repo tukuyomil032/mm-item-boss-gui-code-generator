@@ -1,8 +1,6 @@
-// src/components/item/ItemEnchantments.tsx
 import React from "react";
 import { StringListInput } from "../common/StringListInput";
 import type { EnchantmentEntry } from "../../types";
-// Import Tooltips
 import { Tooltip } from "../common/Tooltip";
 import { ItemEnchantmentsTooltips as tooltips } from '../../tooltips';
 

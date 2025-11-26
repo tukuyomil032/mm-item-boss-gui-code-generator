@@ -1,4 +1,3 @@
-// src/components/item/ItemOptions.tsx
 import React from "react";
 import type { ItemOptions } from "../../types";
 import {
@@ -8,21 +7,18 @@ import {
   SelectInput,
 } from "../common/FormInputs";
 import { StringListInput } from "../common/StringListInput";
-// Import Tooltips
 import { ItemOptionsTooltips as tooltips } from '../../tooltips';
 import { Tooltip } from '../common/Tooltip';
 
 interface Props {
   options: ItemOptions;
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  // Handler for all string[] in Options
   onListChange: (
     name: "Lore" | "Hide" | "ItemFlags" | "BannerLayers" | "Colors" | "FadeColors" | "Pages",
     newValues: string[]
   ) => void;
 }
 
-// Helper to create nested name attribute (e.g., "Options.Id", "Options.Book.Title")
 const name = (key: string) => `Options.${key}`;
 
 const fireworkTypeOptions = [
@@ -40,7 +36,6 @@ export const ItemOptionsForm: React.FC<Props> = ({
 }) => {
   return (
     <>
-      {/* 1. Basic Options */}
       <details className="form-section" open>
         <summary><h4>Basic Options</h4></summary>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
@@ -77,7 +72,6 @@ export const ItemOptionsForm: React.FC<Props> = ({
         </div>
       </details>
 
-      {/* 2. Visual & Customization */}
       <details className="form-section">
         <summary><h4>Visual & Customization</h4></summary>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
@@ -137,7 +131,6 @@ export const ItemOptionsForm: React.FC<Props> = ({
         </div>
       </details>
 
-      {/* 3. Text & Flags (String[] Inputs) */}
       <details className="form-section">
         <summary><h4>Text & Flags</h4></summary>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
@@ -185,7 +178,6 @@ export const ItemOptionsForm: React.FC<Props> = ({
         </div>
       </details>
 
-      {/* 4. Complex Types (Book, Firework, Map) */}
       <details className="form-section">
         <summary><h4>Book Options</h4></summary>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>

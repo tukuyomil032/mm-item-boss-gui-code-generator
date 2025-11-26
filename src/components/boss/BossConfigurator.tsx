@@ -1,12 +1,9 @@
-// src/components/boss/BossConfigurator.tsx
-import React, { useState } from "react"; // ★ 1. useState をインポート
+import React, { useState } from "react"; 
 import type { BossConfig } from "../../types";
 
-// Tooltips
 import { BossInternalNameTooltip as tooltips } from '../../tooltips';
 
-// Child Components
-import { TextInput, SelectInput } from "../common/FormInputs"; // ★ 2. SelectInput をインポート
+import { TextInput, SelectInput } from "../common/FormInputs";
 import { BossOptionsForm } from "./BossOptions";
 import { BossDisplayForm } from "./BossDisplay";
 import { BossEquipmentForm } from "./BossEquipment";
@@ -21,7 +18,6 @@ interface Props {
   setConfig: React.Dispatch<React.SetStateAction<BossConfig>>;
 }
 
-// ★ 3. カテゴリのリストを定義
 const bossCategories = [
   { value: "Options", label: "1. Options" },
   { value: "Display", label: "2. Display Options" },
@@ -32,16 +28,13 @@ const bossCategories = [
   { value: "Immunity", label: "8. Immunity Tables" },
   { value: "Disguise", label: "9. Disguise" },
 ];
-// ★ 4. カテゴリの型を定義
 type BossCategory = "Options" | "Display" | "Equipment" | "BossBar" | "AI" | "KillMessages" | "Immunity" | "Disguise";
 
 
 export function BossConfigurator({ config, setConfig }: Props) {
   
-  // ★ 5. アクティブなカテゴリを管理するState。デフォルトは'Options'
   const [activeCategory, setActiveCategory] = useState<BossCategory>("Options");
   
-  // (handleChange 関数は変更なし)
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -76,7 +69,6 @@ export function BossConfigurator({ config, setConfig }: Props) {
     });
   };
 
-  // (handleListChange 関数は変更なし)
   const handleListChange = (name: keyof BossConfig, newValues: string[]) => {
      setConfig((prev) => ({
       ...prev,
@@ -86,7 +78,6 @@ export function BossConfigurator({ config, setConfig }: Props) {
 
   return (
     <>
-      {/* 1. InternalName (変更なし) */}
       <div className="form-section">
         <h3>Mob Internal Name</h3>
         <TextInput
@@ -98,7 +89,6 @@ export function BossConfigurator({ config, setConfig }: Props) {
         />
       </div>
 
-      {/* ★ 6. カテゴリ選択のドロップダウンを追加 */}
       <div className="form-section">
         <h3>Category Select</h3>
         <SelectInput
@@ -111,11 +101,6 @@ export function BossConfigurator({ config, setConfig }: Props) {
         />
       </div>
 
-      {/* ★ 7. 条件付きレンダリングに変更 */}
-      {/* 以前の <details> タグを削除し、
-        activeCategory に応じて単一のフォームだけを表示します。
-        各フォームは .form-section でラップします。
-      */}
       
       {activeCategory === "Options" && (
         <div className="form-section">

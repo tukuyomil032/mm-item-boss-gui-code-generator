@@ -1,4 +1,3 @@
-// src/components/boss/BossBar.tsx
 import React from "react";
 import type { BossBarOptions } from "../../types";
 import {
@@ -7,7 +6,6 @@ import {
   CheckboxInput,
   SelectInput,
 } from "../common/FormInputs";
-// Import Tooltips
 import { BossBarTooltips as tooltips } from '../../tooltips';
 
 interface Props {
@@ -15,7 +13,6 @@ interface Props {
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
 }
 
-// Helper to create nested name attribute
 const name = (key: keyof BossBarOptions) => `BossBar.${key}`;
 
 const colorOptions = [

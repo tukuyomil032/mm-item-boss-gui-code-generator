@@ -1,8 +1,6 @@
-// src/components/item/ItemPotions.tsx
 import React from "react";
 import { StringListInput } from "../common/StringListInput";
 import type { PotionEntry } from "../../types";
-// Import Tooltips
 import { Tooltip } from "../common/Tooltip";
 import { ItemPotionsTooltips as tooltips } from '../../tooltips';
 

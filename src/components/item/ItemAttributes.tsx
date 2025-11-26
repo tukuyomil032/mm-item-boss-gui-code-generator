@@ -1,8 +1,6 @@
-// src/components/item/ItemAttributes.tsx
 import React from "react";
 import { StringListInput } from "../common/StringListInput";
 import type { AttributeEntry } from "../../types";
-// Import Tooltips
 import { Tooltip } from "../common/Tooltip";
 import { ItemAttributesTooltips as tooltips } from '../../tooltips';
 

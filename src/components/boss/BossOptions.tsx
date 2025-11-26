@@ -1,4 +1,3 @@
-// src/components/boss/BossOptions.tsx
 import React from "react";
 import type { BossOptions } from "../../types";
 import {
@@ -7,7 +6,6 @@ import {
   CheckboxInput,
   SelectInput,
 } from "../common/FormInputs";
-// ★ 1. 修正: tooltips と一緒に mobTypeOptions もインポート
 import { BossOptionsTooltips as tooltips, mobTypeOptions } from '../../tooltips';
 
 interface Props {
@@ -15,10 +13,8 @@ interface Props {
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
 }
 
-// Helper to create nested name attribute (e.g., "Options.Type")
 const name = (key: keyof BossOptions) => `Options.${key}`;
 
-// ★ 2. 削除: ローカルの mobTypeOptions 定義を削除 (tooltips.ts からインポート)
 
 const dragonPhaseOptions = [
   { value: "CIRCLING", label: "CIRCLING" },
@@ -36,12 +32,10 @@ const dragonPhaseOptions = [
 export const BossOptionsForm: React.FC<Props> = ({ options, onChange }) => {
   return (
     <>
-      {/* 1. Basic Settings */}
       <details className="form-section" open>
         <summary><h4>Basic Settings</h4></summary>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
           
-          {/* ★ 3. 変更なし (インポートした mobTypeOptions が使われる) */}
           <SelectInput
             label="Type (Required)"
             name={name("Type")}
@@ -79,7 +73,6 @@ export const BossOptionsForm: React.FC<Props> = ({ options, onChange }) => {
         </div>
       </details>
 
-      {/* 2. Combat Stats */}
       <details className="form-section">
         <summary><h4>Combat Stats</h4></summary>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
@@ -142,7 +135,6 @@ export const BossOptionsForm: React.FC<Props> = ({ options, onChange }) => {
         </div>
       </details>
 
-      {/* 3. Movement & AI */}
       <details className="form-section">
         <summary><h4>Movement & AI</h4></summary>
          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
@@ -196,7 +188,6 @@ export const BossOptionsForm: React.FC<Props> = ({ options, onChange }) => {
          </div>
       </details>
       
-      {/* 4. Boolean Options (Toggles) */}
       <details className="form-section">
         <summary><h4>Boolean Options (Toggles)</h4></summary>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem 1rem" }}>
@@ -237,7 +228,6 @@ export const BossOptionsForm: React.FC<Props> = ({ options, onChange }) => {
         </div>
       </details>
       
-      {/* 5. ArmorStand Options */}
       <details className="form-section">
         <summary><h4>ArmorStand Options</h4></summary>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem 1rem" }}>
@@ -251,7 +241,6 @@ export const BossOptionsForm: React.FC<Props> = ({ options, onChange }) => {
         </div>
       </details>
 
-      {/* 6. Mob-Specific Options */}
       <details className="form-section">
         <summary><h4>Mob-Specific Options</h4></summary>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
