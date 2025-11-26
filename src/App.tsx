@@ -1,33 +1,27 @@
 // src/App.tsx
+
 import React, { useState, useCallback } from "react";
-import "./style/App.css";
-import { BossConfigurator } from "./components/BossConfigurator";
-import { ItemConfigurator } from "./components/ItemConfigurator";
+import { Routes, Route, Link } from 'react-router-dom';
+import { BossConfigurator } from "./components/boss/BossConfigurator";
+import { ItemConfigurator } from "./components/item/ItemConfigurator";
+import { DocsPage } from './components/DocsPage';
 import type { BossConfig, ItemConfig } from "./types";
 import { stringify } from "yaml";
 
-/**
- * オブジェクトから未定義 (undefined, null, '', []) のプロパティを再帰的に削除します。
- * @param obj フィルタリングするオブジェクト
- */
+// (cleanObject 関数は変更なし)
 function cleanObject(obj: any): any {
   if (Array.isArray(obj)) {
-    // 配列の場合は、中身をクリーンにして、空でなければ返す
     const cleanedArray = obj
       .map(cleanObject)
-      .filter(
-        (v) => v !== null && v !== undefined && v !== ""
-      );
+      .filter((v) => v !== null && v !== undefined && v !== "");
     return cleanedArray.length > 0 ? cleanedArray : undefined;
   }
   if (typeof obj === "object" && obj !== null) {
-    // オブジェクトの場合は、各プロパティをクリーンにする
     const cleanedObj: { [key: string]: any } = {};
     for (const key in obj) {
       if (Object.prototype.hasOwnProperty.call(obj, key)) {
         const value = obj[key];
         const cleanedValue = cleanObject(value);
-
         if (
           cleanedValue !== undefined &&
           cleanedValue !== null &&
@@ -38,197 +32,221 @@ function cleanObject(obj: any): any {
         }
       }
     }
-    // オブジェクトが空になった場合は undefined を返す
-    return Object.keys(cleanedObj).length > 0
-      ? cleanedObj
-      : undefined;
+    return Object.keys(cleanedObj).length > 0 ? cleanedObj : undefined;
   }
-  // プリミティブ値 (string, number, boolean)
   if (obj === "") return undefined;
   return obj;
 }
 
-export default function App() {
-  const [configType, setConfigType] = useState<"boss" | "item" | "none">(
-    "none"
+// ★ 1. GeneratorPage が props を受け取るように変更 (変更なし)
+interface GeneratorPageProps {
+  configType: 'boss' | 'item';
+  setConfigType: React.Dispatch<React.SetStateAction<'boss' | 'item'>>;
+  generatedYaml: string;
+  bossConfig: BossConfig;
+  setBossConfig: React.Dispatch<React.SetStateAction<BossConfig>>;
+  itemConfig: ItemConfig;
+  setItemConfig: React.Dispatch<React.SetStateAction<ItemConfig>>;
+  handleGenerateCode: () => void;
+  handleCopyToClipboard: () => void;
+  isCopied: boolean;
+}
+
+const GeneratorPage: React.FC<GeneratorPageProps> = ({
+  configType, setConfigType,
+  generatedYaml,
+  bossConfig, setBossConfig,
+  itemConfig, setItemConfig,
+  handleGenerateCode,
+  handleCopyToClipboard,
+  isCopied
+}) => {
+  return (
+    <main className="app-layout">
+      <div className="config-panel">
+        
+        <div className="form-section">
+          <h3>1. Generate Type</h3>
+          <div className="type-selector">
+            <button
+              className={`button ${
+                configType === "boss" ? "button-primary" : ""
+              }`}
+              onClick={() => setConfigType("boss")}
+            >
+              Boss
+            </button>
+            <button
+              className={`button ${
+                configType === "item" ? "button-primary" : ""
+              }`}
+              onClick={() => setConfigType("item")}
+            >
+              Item
+            </button>
+          </div>
+        </div>
+
+        {configType === "boss" && (
+          <BossConfigurator
+            config={bossConfig}
+            setConfig={setBossConfig}
+          />
+        )}
+        {configType === "item" && (
+          <ItemConfigurator
+            config={itemConfig}
+            setConfig={setItemConfig}
+          />
+        )}
+
+        <div className="form-section" style={{ marginTop: 'auto', paddingTop: '15px' }}>
+          <button
+            className="button button-primary"
+            style={{ width: "100%" }}
+            onClick={handleGenerateCode}
+          >
+            GENERATE YAML CODE
+          </button>
+        </div>
+      </div>
+
+      <div className="output-panel">
+        <div className="output-header">
+          <h3>Generated MythicMobs YAML</h3>
+          {/* ★ 2. コピーボタンのJSXを変更 */}
+          <button
+            // ★ 3. `isCopied` 状態に応じて `copied` クラスを追加
+            className={`button button-secondary ${isCopied ? 'copied' : ''}`}
+            onClick={handleCopyToClipboard}
+            // ★ 4. アニメーション中はボタンを無効化
+            disabled={isCopied}
+          >
+            {isCopied ? (
+              // ★ 5. "Copied!" 状態の表示 (SVGアイコン + テキスト)
+              <>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style={{ marginRight: '8px' }}>
+                  <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                </svg>
+                COPIED!
+              </>
+            ) : (
+              // ★ 6. 通常時のテキスト
+              'COPY'
+            )}
+          </button>
+        </div>
+        <textarea
+          className="yaml-output"
+          value={generatedYaml}
+          readOnly
+          spellCheck="false"
+        />
+      </div>
+    </main>
   );
+};
+
+
+// ★ 7. Appコンポーネント (状態管理)
+export default function App() {
+  const [configType, setConfigType] = useState<'boss' | 'item'>('boss');
   const [generatedYaml, setGeneratedYaml] = useState(
     "ここにYAMLコードが生成されます..."
   );
-
-  // Bossの初期設定 (新しい型定義に合わせて初期化)
   const [bossConfig, setBossConfig] = useState<BossConfig>({
     internalName: "MyCoolBoss",
-    Options: {
-      Type: "ZOMBIE",
-      Health: 100,
-    },
-    // 他の項目は未設定 (undefined) にしておく
-    Equipment: [],
-    AIGoalSelectors: [],
-    AITargetSelectors: [],
-    KillMessages: [],
-    ImmunityTables: [],
+    Options: { Type: "ZOMBIE", Health: 100 },
+    Equipment: [], AIGoalSelectors: [], AITargetSelectors: [],
+    KillMessages: [], ImmunityTables: [],
   });
-
-  // Itemの初期設定 (新しい型定義に合わせて初期化)
   const [itemConfig, setItemConfig] = useState<ItemConfig>({
     internalName: "MyCoolItem",
-    Options: {
-      Id: "DIAMOND_SWORD",
-      DisplayName: "'&bCool Sword'",
-    },
-    // 他の項目は未設定 (undefined) にしておく
-    Attributes: [],
-    Enchantments: [],
-    Potions: [],
+    Options: { Id: "DIAMOND_SWORD" },
+    Attributes: [], Enchantments: [], Potions: [],
   });
 
-  // YAML生成ロジック (cleanObject を使用)
+  const [isCopied, setIsCopied] = useState(false);
+
+  // (handleGenerateCode は変更なし)
   const handleGenerateCode = useCallback(() => {
     let outputObject = {};
     let yamlString = "";
-
     try {
       if (configType === "boss") {
-        // internalName はキーとして使うので、元のオブジェクトから削除
         const { internalName, ...configData } = bossConfig;
         if (!internalName) {
-          setGeneratedYaml(
-            "Error: Internal Name (YAMLのキー) を設定してください。"
-          );
+          setGeneratedYaml("Error: Internal Name (YAMLのキー) を設定してください。");
           return;
         }
-        // 未設定の項目を除外
         const cleanedData = cleanObject(configData);
-        outputObject = {
-          [internalName]: cleanedData,
-        };
+        outputObject = { [internalName]: cleanedData };
       } else if (configType === "item") {
         const { internalName, ...configData } = itemConfig;
         if (!internalName) {
-          setGeneratedYaml(
-            "Error: Internal Name (YAMLのキー) を設定してください。"
-          );
+          setGeneratedYaml("Error: Internal Name (YAMLのキー) を設定してください。");
           return;
         }
-        // 未設定の項目を除外
         const cleanedData = cleanObject(configData);
-        outputObject = {
-          [internalName]: cleanedData,
-        };
-      } else {
-        setGeneratedYaml("Error: BossまたはItemを選択してください。");
-        return;
+        outputObject = { [internalName]: cleanedData };
       }
-
       yamlString = stringify(outputObject, { indent: 2 });
       setGeneratedYaml(yamlString);
     } catch (error) {
       console.error(error);
-      setGeneratedYaml(
-        `Error: YAMLの生成に失敗しました。\n${(error as Error).message}`
-      );
+      setGeneratedYaml(`Error: YAMLの生成に失敗しました。\n${(error as Error).message}`);
     }
   }, [configType, bossConfig, itemConfig]);
 
-  // クリップボードにコピー
-  const handleCopyToClipboard = () => {
-    navigator.clipboard
-      .writeText(generatedYaml)
-      .then(() => {
-        alert("クリップボードにコピーしました！");
-      })
-      .catch((err) => {
-        alert("コピーに失敗しました。");
+  // ★ 8. handleCopyToClipboard のタイムアウトを 2000ms (2秒) に変更
+  const handleCopyToClipboard = useCallback(() => {
+    if (isCopied) return;
+
+    navigator.clipboard.writeText(generatedYaml).then(() => {
+        setIsCopied(true); 
+        // ★ 9. 動画に合わせて 2秒後にリセット
+        setTimeout(() => {
+          setIsCopied(false);
+        }, 2000); 
+      }).catch((err) => {
+        alert("コピーに失敗しました。"); 
         console.error("Copy failed: ", err);
       });
-  };
+  }, [isCopied, generatedYaml]);
 
   return (
     <div className="app-container">
       <header className="app-header">
-        MythicMobs - YAML Generator
+        <Link to="/">
+          <h1>MythicMobs - YAML Generator</h1>
+        </Link>
+        <Link to="/docs">
+          <button className="button button-secondary">
+            Docs
+          </button>
+        </Link>
       </header>
 
-      <main className="main-layout">
-        {/* 左側: 設定パネル */}
-        <div className="config-panel">
-          {/* (変更なし) ... タイプ選択 */}
-          <div className="form-section">
-            <h3>1. Generate Type</h3>
-            <div className="type-selector">
-              <button
-                className={`button ${
-                  configType === "boss"
-                    ? "button-primary"
-                    : "button-secondary"
-                }`}
-                onClick={() => setConfigType("boss")}
-              >
-                Boss
-              </button>
-              <button
-                className={`button ${
-                  configType === "item"
-                    ? "button-primary"
-                    : "button-secondary"
-                }`}
-                onClick={() => setConfigType("item")}
-              >
-                Item
-              </button>
-            </div>
-          </div>
-
-          {/* (変更なし) ... 設定オプション */}
-          {configType === "boss" && (
-            <BossConfigurator
-              config={bossConfig}
-              setConfig={setBossConfig}
+      <Routes>
+        <Route 
+          path="/" 
+          element={
+            <GeneratorPage 
+              configType={configType}
+              setConfigType={setConfigType}
+              generatedYaml={generatedYaml}
+              bossConfig={bossConfig}
+              setBossConfig={setBossConfig}
+              itemConfig={itemConfig}
+              setItemConfig={setItemConfig}
+              handleGenerateCode={handleGenerateCode}
+              handleCopyToClipboard={handleCopyToClipboard}
+              isCopied={isCopied}
             />
-          )}
-          {configType === "item" && (
-            <ItemConfigurator
-              config={itemConfig}
-              setConfig={setItemConfig}
-            />
-          )}
-
-          {/* (変更なし) ... 生成ボタン */}
-          {configType !== "none" && (
-            <div className="form-section">
-              <h3>Generate Code</h3>
-              <button
-                className="button button-primary"
-                style={{ width: "100%" }}
-                onClick={handleGenerateCode}
-              >
-                GENERATE YAML CODE
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* (変更なし) ... 右側: 出力パネル */}
-        <div className="output-panel">
-          <div className="output-header">
-            <h3>Generated MythicMobs YAML</h3>
-            <button
-              className="button button-secondary"
-              onClick={handleCopyToClipboard}
-            >
-              COPY TO CLIPBOARD
-            </button>
-          </div>
-          <textarea
-            className="yaml-output"
-            value={generatedYaml}
-            readOnly
-            spellCheck="false"
-          />
-        </div>
-      </main>
+          } 
+        />
+        <Route path="/docs" element={<DocsPage />} />
+      </Routes>
     </div>
   );
 }

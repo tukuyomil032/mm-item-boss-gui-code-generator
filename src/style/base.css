@@ -1,0 +1,88 @@
+/* src/style/base.css */
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* --- CSS変数 --- */
+:root {
+  --font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Helvetica, Arial, sans-serif;
+
+  /* パネル・背景 */
+  --panel-bg: rgba(0, 0, 0, 0.4);
+  --panel-border: rgba(255, 255, 255, 0.15);
+  --input-bg: rgba(0, 0, 0, 0.3);
+  --input-bg-focus: rgba(0, 0, 0, 0.4);
+
+  /* テキスト */
+  --text-color: #f0f0f5;
+  --text-color-muted: #a0a0a5;
+
+  /* アクセントカラー */
+  --accent-color: #3b82f6;
+  --accent-color-dark: #2563eb;
+  --accent-glow: 0 0 15px rgba(59, 130, 246, 0.6);
+
+  /* エラー */
+  --error-color: #ef5350;
+  --error-bg: rgba(239, 83, 80, 0.1);
+}
+
+/* --- アニメーション --- */
+@keyframes gradient {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+/* --- グローバルリセット & body スタイル --- */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  line-height: 1.6;
+  color: var(--text-color);
+  overflow-y: auto;
+
+  background: linear-gradient(
+    315deg,
+    rgb(24, 0, 101) 3%,
+    rgba(60, 132, 206, 1) 38%,
+    rgb(5, 61, 57) 68%,
+    rgb(16, 135, 66) 98%
+  );
+  animation: gradient 15s ease infinite;
+  background-size: 400% 400%;
+  background-attachment: fixed;
+}
+
+/* --- #root スタイル --- */
+#root {
+  max-width: 1300px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  padding: 20px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}

@@ -18,7 +18,7 @@ export interface BossOptions{
     Collidable?: boolean;
     Despawn?: boolean | string; // true, false, 'scripted'
     Faction?: string;
-    Invicible?: boolean;
+    Invincible?: boolean;
     Interactable?: boolean;
     Levitation?: boolean;
     Mount?: string;
@@ -34,7 +34,7 @@ export interface BossOptions{
     PreventRenaming?: boolean;
     PreventSlimeSplit?: boolean;
     PreventPotionEffects?: boolean;
-    PreventTeleporing?: boolean;
+    PreventTeleporting?: boolean;
     PreventWorldSave?: boolean;
     RepeatAllSkills?: boolean;
     ShowHealth?: boolean;
@@ -103,7 +103,7 @@ export interface BossDisplayOptions{
     Invulnerable?: boolean;
     HasBoundingBox?: boolean;
     Model?: string;
-    MythicCreater?: string;
+    MythicCrater?: string;
     ShowPitch?: boolean;
 }
 
