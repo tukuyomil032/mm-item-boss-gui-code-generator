@@ -24,9 +24,9 @@ const bossCategories = [
   { value: "Equipment", label: "3. Equipment" },
   { value: "BossBar", label: "4. BossBar" },
   { value: "AI", label: "5. Custom AI" },
-  { value: "KillMessages", label: "7. Kill Messages" },
-  { value: "Immunity", label: "8. Immunity Tables" },
-  { value: "Disguise", label: "9. Disguise" },
+  { value: "KillMessages", label: "6. Kill Messages" },
+  { value: "Immunity", label: "7. Immunity Tables" },
+  { value: "Disguise", label: "8. Disguise" },
 ];
 type BossCategory = "Options" | "Display" | "Equipment" | "BossBar" | "AI" | "KillMessages" | "Immunity" | "Disguise";
 
@@ -162,7 +162,7 @@ export function BossConfigurator({ config, setConfig }: Props) {
 
       {activeCategory === "KillMessages" && (
         <div className="form-section">
-          <h3>7. Kill Messages</h3>
+          <h3>6. Kill Messages</h3>
           <BossKillMessagesForm
             values={config.KillMessages}
             onChange={(v) => handleListChange("KillMessages", v)}
@@ -172,7 +172,7 @@ export function BossConfigurator({ config, setConfig }: Props) {
 
       {activeCategory === "Immunity" && (
         <div className="form-section">
-          <h3>8. Immunity Tables</h3>
+          <h3>7. Immunity Tables</h3>
           <BossImmunityForm
             values={config.ImmunityTables}
             onChange={(v) => handleListChange("ImmunityTables", v)}
@@ -182,7 +182,7 @@ export function BossConfigurator({ config, setConfig }: Props) {
       
       {activeCategory === "Disguise" && (
         <div className="form-section">
-          <h3>9. Disguise</h3>
+          <h3>8. Disguise</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
             <BossDisguiseForm
               options={config.Disguise || { Type: "" }}

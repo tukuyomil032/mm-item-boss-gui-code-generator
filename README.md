@@ -1,73 +1,57 @@
-# React + TypeScript + Vite
+# MythicMobs - GUI Code Generator
+__This tool can automatically generate code that defines MythicMobs items and bosses using a GUI menu.__
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+## Technology Stacks
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Node.js 23.4.0
+- React 19
+- Vite
 
-## React Compiler
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Languages
 
-## Expanding the ESLint configuration
+- TypeScript
+- CSS
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+# How to Use
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1. Select one generation type from either “Boss” or “Item”.
+2. Please enter the ID to identify this Mob/Item within the YAML file. (Internal Name (YAML Key))
+3. Select the category of options to configure. 
+4. Please set the type/value for each item.
+5. Click the GENERATE YAML CODE button.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+# List of configuration options per Boss/Item:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Boss
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Options
+- Display Options
+- Equipment
+- BossBar
+- Custom AI
+- Kill Messages
+- Immunity Tables
+- Disguise
+
+## Item
+
+- Options
+- Attributes
+- Enchantments
+- Potions
+
+
+## Notes:
+
+Due to the large number of options available for Bosses and Items, please be sure to use the **documentation page explaining each setting item**.
+∟**How to access the documentation page:**
+*Click the “DOCS” button located directly next to the page title “MythicMobs - YAML Generator”.*
+
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
