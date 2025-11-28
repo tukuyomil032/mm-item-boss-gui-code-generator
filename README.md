@@ -48,7 +48,8 @@ __This tool can automatically generate code that defines MythicMobs items and bo
 ## Notes:
 
 Due to the large number of options available for Bosses and Items, please be sure to use the **documentation page explaining each setting item**.
-∟**How to access the documentation page:**
+
+### How to access the documentation page:
 *Click the “DOCS” button located directly next to the page title “MythicMobs - YAML Generator”.*
 
 
