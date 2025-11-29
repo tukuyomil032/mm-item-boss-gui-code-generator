@@ -6,5 +6,5 @@ export default defineConfig({
   plugins: [react()],
   
 
-  base: 'mm-item-boss-gui-code-generator',
+  base: '/mm-item-boss-gui-code-generator/',
 })
